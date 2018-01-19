@@ -1,0 +1,18 @@
+{
+	"recommendations": [
+		// General
+		"robertohuertasm.vscode-icons",
+		"PeterJausovec.vscode-docker",
+		"wayou.vscode-todo-highlight",
+		"christian-kohler.path-intellisense",
+		"CoenraadS.bracket-pair-colorizer",
+		"cssho.vscode-svgviewer",
+		"naumovs.color-highlight",
+		"formulahendry.auto-complete-tag",
+		"dinhani.divider",
+		// JS
+		"eg2.vscode-npm-script",
+		// TypeScript
+		"eg2.tslint"
+	]
+}

@@ -1,0 +1,17 @@
+{
+	"transform": {
+		".(js|ts|jsx|tsx)$": "./node_modules/ts-jest/preprocessor.js"
+	},
+	"testMatch": [
+		"<rootDir>/test/**/?(*.)(unit|func).(js|ts)?(x)"
+	],
+	"modulePaths": [
+		"src"
+	],
+	"moduleFileExtensions": [
+		"js",
+		"ts",
+		"jsx",
+		"tsx"
+	]
+}
