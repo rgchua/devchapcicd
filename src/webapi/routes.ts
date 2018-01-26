@@ -14,6 +14,7 @@ export default function registerRoutes(router: KoaRouter) {
 	router
 		.post("/codeCommitted", (ctx, next) => {
 			console.log(JSON.stringify(ctx));
+			console.log("code push detected!");
 		});
 
 	router.post("/server/", "start", async (ctx, next) => {
