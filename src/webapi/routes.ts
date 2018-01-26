@@ -17,6 +17,14 @@ export default function registerRoutes(router: KoaRouter) {
 			console.log("code push detected!");
 		});
 
+	router.get("/method1", (ctx, next) => {
+		ctx.body = "Hello World1!";
+	});
+
+	router.get("/method2/", (ctx, next) => {
+		ctx.body = "Hello World1!";
+	});
+
 	router.post("/server/", "start", async (ctx, next) => {
 
 		console.log("blahblah");
