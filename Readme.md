@@ -8,4 +8,11 @@ docker ps
 ## See the logs for the container
 docker logs <containerID>
 
+# TODO
+1. Determine where to put all repos calling endpoint
+2. Check repo ID against local repo directories - git clone if new, git clean -x -d -f git pull if existing
+3. Run tests on repo
+4. Build src
+5. Deploy container / application
+
 
