@@ -1,5 +1,7 @@
 import * as KoaRouter from "koa-router";
+import * as KoaBody from "koa-body";
 
+// tslint:disable:no-console
 export default function registerRoutes(router: KoaRouter) {
 
 	// ============================================================================
@@ -13,8 +15,10 @@ export default function registerRoutes(router: KoaRouter) {
 
 	router
 		.post("/codeCommitted", (ctx, next) => {
-			console.log(JSON.stringify(ctx));
+
+			// console.log(JSON.stringify(ctx));
 			console.log("code push detected!");
+			console.log(JSON.stringify(ctx.request.body));
 			ctx.response.status = 200;
 		});
 
