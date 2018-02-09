@@ -32,14 +32,16 @@ export default function registerRoutes(router: KoaRouter) {
 			ctx.response.status = 200;
 
 			const body = ctx.request.body;
+			const commits: any[] = body.commits;
+			const lastCommit = commits[commits.length - 1];
 
 			const gitCommitData: GitCommitData = {
 				repoID: body.repository.id,
 				repoUrl: body.repository.clone_url,
-				commitID: body.commits.id,
-				committerName: body.commits.author.name,
-				committerEmail: body.commits.author.email,
-				commitTimeStamp: body.commits.timestamp,
+				commitID: lastCommit.id,
+				committerName: lastCommit.author.name,
+				committerEmail: lastCommit.author.email,
+				commitTimeStamp: lastCommit.timestamp,
 			};
 		});
 
