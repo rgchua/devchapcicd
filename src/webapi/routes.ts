@@ -74,8 +74,7 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	console.log("Git commit data: ", gitCommitData);
 
 	const dir: string = `${gitCommitData.repoID}`;
-	shell.cd("..");
-	shell.chmod(777, ".");
+	shell.cd("../../../devchapcicd");
 	shell.rm("-rf", dir);
 	shell.mkdir("-p", dir);
 	shell.cd(dir);

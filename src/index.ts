@@ -13,7 +13,7 @@ Startup.startUp(async () => {
 	console.log("Working directory: ", shell.pwd());
 
 	// const dir: string = `74839274893`;
-	// shell.cd("..");
+	// shell.cd("../../../devchapcicd");
 	// shell.rm("-rf", dir);
 	// shell.mkdir("-p", dir);
 	// shell.cd(dir);
