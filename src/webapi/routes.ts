@@ -94,6 +94,7 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	}
 
 	shellExec(`docker-compose up`);
+	shellExec(`go build`);
 	shellExec(`go run main.go`);
 
 	console.log(`git repo ${gitCommitData.repoUrl} updated`);
