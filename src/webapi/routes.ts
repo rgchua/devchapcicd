@@ -73,8 +73,7 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 
 	console.log("Git commit data: ", gitCommitData);
 
-	const dir: string = `${gitCommitData.repoID}`;
-	shell.cd("..");
+	const dir: string = `$HOME/repos/${gitCommitData.repoID}`;
 	shell.rm("-rf", dir);
 	shell.mkdir("-p", dir);
 	shell.cd(dir);
