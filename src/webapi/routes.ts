@@ -69,6 +69,8 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	// create repo dir
 	// clone
 
+	console.log("Git commit data: ", gitCommitData);
+
 	const dir: string = `${gitCommitData.repoID}`;
 	shell.cd("..");
 	shell.rm("-rf", dir);
