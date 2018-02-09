@@ -80,6 +80,8 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	shell.cd(basePath);
 
 	const directoryExists = shell.test("-e", folder);
+	shellExec(`sudo chmod 777 -R ${basePath}`);
+
 	if (directoryExists) {
 		shell.cd(folder);
 		shellExec(`git clean -x -d -f`);
