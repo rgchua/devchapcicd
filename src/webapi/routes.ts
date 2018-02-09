@@ -73,11 +73,17 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 
 	console.log("Git commit data: ", gitCommitData);
 
-	const dir: string = `$HOME/repos/${gitCommitData.repoID}`;
+	const dir: string = `${gitCommitData.repoID}`;
+	shell.cd("..");
+	shell.chmod(777, ".");
 	shell.rm("-rf", dir);
 	shell.mkdir("-p", dir);
 	shell.cd(dir);
-	shell.exec(`git clone ${gitCommitData.repoUrl} .`);
+	shell.exec(`git clone ${gitCommitData.repoUrl} .`, (code, stdout, stderr) => {
+		console.log("errcode: ", code);
+		console.log("out: ", stdout);
+		console.log("err: ", stderr);
+	});
 
 	console.log(`git repo ${gitCommitData.repoUrl} cloned`);
 };

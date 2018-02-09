@@ -10,7 +10,14 @@ Startup.startUp(async () => {
 		registerRoutes(router);
 	});
 
-	console.log(shell.pwd());
+	console.log("Working directory: ", shell.pwd());
+
+	// const dir: string = `74839274893`;
+	// shell.cd("..");
+	// shell.rm("-rf", dir);
+	// shell.mkdir("-p", dir);
+	// shell.cd(dir);
+	// shell.exec(`git clone https://github.com/carrielyp/beatricethetelegrambot.git .`);
 
 	// Start
 	await server.start();
