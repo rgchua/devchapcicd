@@ -78,6 +78,7 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 
 	const folder: string = `${gitCommitData.repoID}`;
 	shell.cd(basePath);
+	shell.chmod(777, folder);
 	shell.rm("-rf", folder);
 	shell.mkdir("-p", folder);
 	shell.cd(folder);
