@@ -28,7 +28,7 @@ export default function registerRoutes(router: KoaRouter) {
 
 			// console.log(JSON.stringify(ctx));
 			console.log("code push detected!");
-			console.log(JSON.stringify(ctx.request.body));
+			// console.log(JSON.stringify(ctx.request.body));
 			ctx.response.status = 200;
 
 			const body = ctx.request.body;
@@ -43,6 +43,8 @@ export default function registerRoutes(router: KoaRouter) {
 				committerEmail: lastCommit.author.email,
 				commitTimeStamp: lastCommit.timestamp,
 			};
+
+			doSomeGitStuff(gitCommitData);
 		});
 
 	router.get("/method1", (ctx, next) => {
@@ -77,4 +79,6 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	shell.mkdir("-p", dir);
 	shell.cd(dir);
 	shell.exec(`git clone ${gitCommitData.repoUrl} .`);
+
+	console.log(`git repo ${gitCommitData.repoUrl} cloned`);
 };
