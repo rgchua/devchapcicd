@@ -1,5 +1,15 @@
 import * as KoaRouter from "koa-router";
 import * as KoaBody from "koa-body";
+import * as shell from "shelljs";
+
+interface GitCommitData {
+	repoID: string;
+	repoUrl: string;
+	commitID: string;
+	committerName: string;
+	committerEmail: string;
+	commitTimeStamp: string;
+}
 
 // tslint:disable:no-console
 export default function registerRoutes(router: KoaRouter) {
@@ -22,12 +32,15 @@ export default function registerRoutes(router: KoaRouter) {
 			ctx.response.status = 200;
 
 			const body = ctx.request.body;
-			const repoID = body.repository.id;
-			const repoUrl = body.repository.clone_url;
-			const commitID = body.commits.id;
-			const committerName = body.commits.author.name;
-			const committerEmail = body.commits.author.email;
-			const commitTimeStamp = body.commits.timestamp;
+
+			const gitCommitData: GitCommitData = {
+				repoID: body.repository.id,
+				repoUrl: body.repository.clone_url,
+				commitID: body.commits.id,
+				committerName: body.commits.author.name,
+				committerEmail: body.commits.author.email,
+				commitTimeStamp: body.commits.timestamp,
+			};
 		});
 
 	router.get("/method1", (ctx, next) => {
@@ -48,3 +61,16 @@ export default function registerRoutes(router: KoaRouter) {
 		// TODO:
 	});
 }
+
+const doSomeGitStuff = (gitCommitData: GitCommitData) => {
+	// cd up
+	// create repo dir
+	// clone
+
+	const dir: string = `${gitCommitData.repoID}`;
+	shell.cd("..");
+	shell.rm("-rf", dir);
+	shell.mkdir("-p", dir);
+	shell.cd(dir);
+	shell.exec(`git clone ${gitCommitData.repoUrl} .`);
+};
