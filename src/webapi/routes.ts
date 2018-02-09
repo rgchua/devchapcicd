@@ -78,20 +78,23 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 
 	const folder: string = `${gitCommitData.repoID}`;
 	shell.cd(basePath);
-	shell.chmod(777, folder);
-	shell.rm("-rf", folder);
-	shell.mkdir("-p", folder);
-	shell.cd(folder);
-	// shell.exec(`git clone ${gitCommitData.repoUrl} .`, (code, stdout, stderr) => {
-	// 	console.log("errcode: ", code);
-	// 	console.log("out: ", stdout);
-	// 	console.log("err: ", stderr);
-	// });
-	shellExec(`git clone ${gitCommitData.repoUrl} .`);
+
+	const directoryExists = shell.test("-e", folder);
+	if (directoryExists) {
+		shell.cd(folder);
+		shellExec(`git clean -x -d -f`);
+		shellExec(`git pull`);
+	} else {
+		shell.rm("-rf", folder);
+		shell.mkdir("-p", folder);
+		shell.cd(folder);
+		shellExec(`git clone ${gitCommitData.repoUrl} .`);
+	}
+
 	shellExec(`docker-compose up`);
 	shellExec(`go run main.go`);
 
-	console.log(`git repo ${gitCommitData.repoUrl} cloned`);
+	console.log(`git repo ${gitCommitData.repoUrl} updated`);
 };
 
 const shellExec = (cmd: string) => {
