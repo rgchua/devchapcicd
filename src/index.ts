@@ -5,7 +5,7 @@ import * as shell from "shelljs";
 
 Startup.startUp(async () => {
 	// Setup server
-	const server = new Server("Dev Chap CI/CD", 4000);
+	const server = new Server("Dev Chap CI/CD", 80);
 	server.setDefaultConfig(async (router) => {
 		registerRoutes(router);
 	});

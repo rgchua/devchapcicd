@@ -73,7 +73,9 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 
 	console.log("Git commit data: ", gitCommitData);
 
-	const basePath = "../../../devchapcicd";
+	// const basePath = "../../../devchapcicd";
+	const basePath = "../repos";
+
 	const folder: string = `${gitCommitData.repoID}`;
 	shell.cd(basePath);
 	shell.rm("-rf", folder);
