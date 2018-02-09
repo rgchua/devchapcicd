@@ -73,16 +73,28 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 
 	console.log("Git commit data: ", gitCommitData);
 
-	const dir: string = `${gitCommitData.repoID}`;
-	shell.cd("../../../devchapcicd");
-	shell.rm("-rf", dir);
-	shell.mkdir("-p", dir);
-	shell.cd(dir);
-	shell.exec(`git clone ${gitCommitData.repoUrl} .`, (code, stdout, stderr) => {
+	const basePath = "../../../devchapcicd";
+	const folder: string = `${gitCommitData.repoID}`;
+	shell.cd(basePath);
+	shell.rm("-rf", folder);
+	shell.mkdir("-p", folder);
+	shell.cd(folder);
+	// shell.exec(`git clone ${gitCommitData.repoUrl} .`, (code, stdout, stderr) => {
+	// 	console.log("errcode: ", code);
+	// 	console.log("out: ", stdout);
+	// 	console.log("err: ", stderr);
+	// });
+	shellExec(`git clone ${gitCommitData.repoUrl} .`);
+	shellExec(`docker-compose up`);
+	shellExec(`go run main.go`);
+
+	console.log(`git repo ${gitCommitData.repoUrl} cloned`);
+};
+
+const shellExec = (cmd: string) => {
+	shell.exec(cmd, (code, stdout, stderr) => {
 		console.log("errcode: ", code);
 		console.log("out: ", stdout);
 		console.log("err: ", stderr);
 	});
-
-	console.log(`git repo ${gitCommitData.repoUrl} cloned`);
 };
