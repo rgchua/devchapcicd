@@ -72,6 +72,7 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	// clone
 
 	console.log("Git commit data: ", gitCommitData);
+	console.log("working dir: ", shell.pwd());
 
 	// const basePath = "../../../devchapcicd";
 	const basePath = "../repos";
