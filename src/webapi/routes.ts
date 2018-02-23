@@ -102,12 +102,12 @@ const doSomeGitStuff = async (gitCommitData: GitCommitData, callback: (log: stri
 		shellExec(`git clone ${gitCommitData.repoUrl} .`);
 	}
 
-	const log = "";
+	let log = "";
 
-	appendResponseToLog(log, await shellExec(`docker-compose up -d`));
-	appendResponseToLog(log, await shellExec(`go get -v`));
-	appendResponseToLog(log, await shellExec(`go build`));
-	appendResponseToLog(log, await shellExec(`go run main.go`));
+	log = appendResponseToLog(log, await shellExec(`docker-compose up -d`));
+	log = appendResponseToLog(log, await shellExec(`go get -v`));
+	log = appendResponseToLog(log, await shellExec(`go build`));
+	log = appendResponseToLog(log, await shellExec(`go run main.go`));
 
 	console.log(`git repo ${gitCommitData.repoUrl} updated`);
 	callback(log);
