@@ -108,7 +108,8 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 		shellExec(`git clone ${gitCommitData.repoUrl} .`);
 	}
 
-	shellExec(`docker-compose up`);
+	shellExec(`docker-compose up -d`);
+	shellExec(`go get`);
 	shellExec(`go build`);
 	shellExec(`go run main.go`);
 
