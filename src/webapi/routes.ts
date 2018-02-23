@@ -75,7 +75,6 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	console.log("working dir: ", shell.pwd());
 
 	const basePath = "../repos";
-	// const path = `../repos/${gitCommitData.repoID}`
 
 	const folder: string = `${gitCommitData.repoID}`;
 
@@ -86,25 +85,15 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	}
 
 	shell.cd(basePath);
-	console.log("working dir2: ", shell.pwd());
-
-
 	const directoryExists = shell.test("-e", folder);
-	// const directoryExists = shell.test("-e", folder);
-	// shellExec(`sudo chmod 777 -R ${basePath}`);
 
 	if (directoryExists) {
 		shell.cd(folder);
-		console.log("working dir3: ", shell.pwd());
-
 		shellExec(`git clean -x -d -f`);
 		shellExec(`git pull`);
 	} else {
-		//shell.rm("-rf", folder);
 		shell.mkdir("-p", folder);
 		shell.cd(folder);
-		console.log("working dir4: ", shell.pwd());
-
 		shellExec(`git clone ${gitCommitData.repoUrl} .`);
 	}
 
@@ -117,9 +106,13 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 };
 
 const shellExec = (cmd: string) => {
-	shell.exec(cmd, (code, stdout, stderr) => {
-		console.log("errcode: ", code);
-		console.log("out: ", stdout);
-		console.log("err: ", stderr);
+	shell.exec(cmd, (exitcode, stdout, stderr) => {
+		// if abnormal exit code
+		if (!!exitcode) {
+			console.log("errcode: ", exitcode);
+			console.log("err: ", stderr);
+		} else {
+			console.log("out: ", stdout);
+		}
 	});
 };
