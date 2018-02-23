@@ -74,32 +74,37 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	console.log("Git commit data: ", gitCommitData);
 	console.log("working dir: ", shell.pwd());
 
-	// const basePath = "../../../devchapcicd";
-	// const basePath = "../repos";
-	const path = `../repos/${gitCommitData.repoID}`
+	const basePath = "../repos";
+	// const path = `../repos/${gitCommitData.repoID}`
 
-	// const folder: string = `${gitCommitData.repoID}`;
+	const folder: string = `${gitCommitData.repoID}`;
 
-	// const basePathExists = shell.test("-e", basePath);
-	//
-	// if (!basePathExists) {
-	// shell.mkdir(basePath);
-	// }
-	//
-	// shell.cd(basePath);
+	const basePathExists = shell.test("-e", basePath);
 
-	const directoryExists = shell.test("-e", path);
+	if (!basePathExists) {
+		shell.mkdir(basePath);
+	}
+
+	shell.cd(basePath);
+	console.log("working dir2: ", shell.pwd());
+
+
+	const directoryExists = shell.test("-e", folder);
 	// const directoryExists = shell.test("-e", folder);
 	// shellExec(`sudo chmod 777 -R ${basePath}`);
 
 	if (directoryExists) {
-		shell.cd(path);
+		shell.cd(folder);
+		console.log("working dir3: ", shell.pwd());
+
 		shellExec(`git clean -x -d -f`);
 		shellExec(`git pull`);
 	} else {
 		//shell.rm("-rf", folder);
-		shell.mkdir("-p", path);
-		shell.cd(path);
+		shell.mkdir("-p", folder);
+		shell.cd(folder);
+		console.log("working dir4: ", shell.pwd());
+
 		shellExec(`git clone ${gitCommitData.repoUrl} .`);
 	}
 
