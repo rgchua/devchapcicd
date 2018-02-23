@@ -128,6 +128,7 @@ const appendResponseToLog = (log: string, response: ShellOut): string => {
 		ret += "\n";
 	}
 
+	console.log("Log: ", ret);
 	return ret;
 };
 
