@@ -75,22 +75,31 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	console.log("working dir: ", shell.pwd());
 
 	// const basePath = "../../../devchapcicd";
-	const basePath = "../repos";
+	// const basePath = "../repos";
+	const path = `../repos/${gitCommitData.repoID}`
 
-	const folder: string = `${gitCommitData.repoID}`;
-	shell.cd(basePath);
+	// const folder: string = `${gitCommitData.repoID}`;
 
-	const directoryExists = shell.test("-e", folder);
-	shellExec(`sudo chmod 777 -R ${basePath}`);
+	// const basePathExists = shell.test("-e", basePath);
+	//
+	// if (!basePathExists) {
+	// shell.mkdir(basePath);
+	// }
+	//
+	// shell.cd(basePath);
+
+	const directoryExists = shell.test("-e", path);
+	// const directoryExists = shell.test("-e", folder);
+	// shellExec(`sudo chmod 777 -R ${basePath}`);
 
 	if (directoryExists) {
-		shell.cd(folder);
+		shell.cd(path);
 		shellExec(`git clean -x -d -f`);
 		shellExec(`git pull`);
 	} else {
-		shell.rm("-rf", folder);
-		shell.mkdir("-p", folder);
-		shell.cd(folder);
+		//shell.rm("-rf", folder);
+		shell.mkdir("-p", path);
+		shell.cd(path);
 		shellExec(`git clone ${gitCommitData.repoUrl} .`);
 	}
 
