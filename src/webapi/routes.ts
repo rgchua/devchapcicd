@@ -104,43 +104,43 @@ const doSomeGitStuff = async (gitCommitData: GitCommitData, callback: (log: stri
 
 	const log = "";
 
-	let response = await shellExec(`docker-compose up -d`);
-	if (!!response.exitcode) {
-		appendLog(log, response.err);
-	}
-	response = await shellExec(`go get -v`);
-	if (!!response.exitcode) {
-		appendLog(log, response.err);
-	}
-	response = await shellExec(`go build`);
-	if (!!response.exitcode) {
-		appendLog(log, response.err);
-	}
-	response = await shellExec(`go run main.go`);
-	if (!!response.exitcode) {
-		appendLog(log, response.err);
-	}
+	appendResponseToLog(log, await shellExec(`docker-compose up -d`));
+	appendResponseToLog(log, await shellExec(`go get -v`));
+	appendResponseToLog(log, await shellExec(`go build`));
+	appendResponseToLog(log, await shellExec(`go run main.go`));
 
 	console.log(`git repo ${gitCommitData.repoUrl} updated`);
 	callback(log);
 };
 
-const appendLog = (log: string, toAppend: string): string => {
+const appendResponseToLog = (log: string, response: ShellOut): string => {
 	let ret = log;
-	ret += !!log.length ? "\n" : "";
-	ret += toAppend;
+
+	if (!!response.exitcode) {
+		ret += !!log.length ? "\n" : "";
+		ret += `Error: ${response.err}`;
+		ret += "\n";
+	}
+
+	if (!!response.out.length) {
+		ret += !!log.length ? "\n" : "";
+		ret += `Out: ${response.out}`;
+		ret += "\n";
+	}
+
 	return ret;
 };
 
-interface ErrorInterface {
+interface ShellOut {
 	exitcode: number;
 	err: string;
+	out: string;
 }
 
-const shellExec = (cmd: string): Promise<ErrorInterface> => {
+const shellExec = (cmd: string): Promise<ShellOut> => {
 	return new Promise((resolve) => {
 		shell.exec(cmd, (exitcode, stdout, stderr) => {
-			resolve({ exitcode, err: !!exitcode ? stderr : null });
+			resolve({ exitcode, err: !!exitcode ? stderr : null, out: stdout });
 		});
 	});
 };
