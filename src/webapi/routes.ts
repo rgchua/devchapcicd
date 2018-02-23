@@ -24,7 +24,7 @@ export default function registerRoutes(router: KoaRouter) {
 		});
 
 	router
-		.post("/codeCommitted", (ctx, next) => {
+		.post("/codeCommitted", async (ctx, next) => {
 
 			// console.log(JSON.stringify(ctx));
 			console.log("code push detected!");
@@ -44,7 +44,8 @@ export default function registerRoutes(router: KoaRouter) {
 				commitTimeStamp: lastCommit.timestamp,
 			};
 
-			doSomeGitStuff(gitCommitData);
+			const response = await doSomeGitStuff(gitCommitData);
+			ctx.response.body = response;
 		});
 
 	router.get("/method1", (ctx, next) => {
@@ -66,7 +67,7 @@ export default function registerRoutes(router: KoaRouter) {
 	});
 }
 
-const doSomeGitStuff = (gitCommitData: GitCommitData) => {
+const doSomeGitStuff = async (gitCommitData: GitCommitData): Promise<string> => {
 	// cd up
 	// create repo dir
 	// clone
@@ -97,22 +98,53 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 		shellExec(`git clone ${gitCommitData.repoUrl} .`);
 	}
 
-	shellExec(`docker-compose up -d`);
-	shellExec(`go get`);
-	shellExec(`go build`);
-	shellExec(`go run main.go`);
+	const log = "";
+
+	let response = await shellExec(`docker-compose up -d`);
+	if (!!response.exitcode) {
+		appendLog(log, response.err);
+	}
+	response = await shellExec(`go get`);
+	if (!!response.exitcode) {
+		appendLog(log, response.err);
+	}
+	response = await shellExec(`go build`);
+	if (!!response.exitcode) {
+		appendLog(log, response.err);
+	}
+	response = await shellExec(`go run main.go`);
+	if (!!response.exitcode) {
+		appendLog(log, response.err);
+	}
 
 	console.log(`git repo ${gitCommitData.repoUrl} updated`);
+	return log;
 };
 
-const shellExec = (cmd: string) => {
-	shell.exec(cmd, (exitcode, stdout, stderr) => {
-		// if abnormal exit code
-		if (!!exitcode) {
-			console.log("errcode: ", exitcode);
-			console.log("err: ", stderr);
-		} else {
-			console.log("out: ", stdout);
-		}
+const appendLog = (log: string, toAppend: string): string => {
+	let ret = log;
+	ret += !!log.length ? "\n" : "";
+	ret += toAppend;
+	return ret;
+};
+
+interface ErrorInterface {
+	exitcode: number;
+	err: string;
+}
+
+const shellExec = (cmd: string): Promise<ErrorInterface> => {
+	return new Promise((resolve) => {
+		shell.exec(cmd, (exitcode, stdout, stderr) => {
+			// if abnormal exit code
+			if (!!exitcode) {
+				// console.log("errcode: ", exitcode);
+				// console.log("err: ", stderr);
+				resolve({ exitcode, err: stderr });
+			} else {
+				// console.log("out: ", stdout);
+				resolve({ exitcode: 0, err: null });
+			}
+		});
 	});
 };
