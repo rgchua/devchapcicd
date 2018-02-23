@@ -104,7 +104,7 @@ const doSomeGitStuff = async (gitCommitData: GitCommitData): Promise<string> => 
 	if (!!response.exitcode) {
 		appendLog(log, response.err);
 	}
-	response = await shellExec(`go get`);
+	response = await shellExec(`go get -v`);
 	if (!!response.exitcode) {
 		appendLog(log, response.err);
 	}
