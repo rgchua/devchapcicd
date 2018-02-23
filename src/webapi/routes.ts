@@ -98,7 +98,7 @@ const doSomeGitStuff = (gitCommitData: GitCommitData) => {
 	}
 
 	shellExec(`docker-compose up -d`);
-	shellExec(`go get`);
+	shellExec(`go get -v`);
 	shellExec(`go build`);
 	shellExec(`go run main.go`);
 
