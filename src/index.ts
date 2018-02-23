@@ -10,8 +10,6 @@ Startup.startUp(async () => {
 		registerRoutes(router);
 	});
 
-	console.log("Working directory: ", shell.pwd());
-
 	// Start
 	await server.start();
 });

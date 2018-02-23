@@ -24,7 +24,7 @@ export default function registerRoutes(router: KoaRouter) {
 		});
 
 	router
-		.post("/codeCommitted", async (ctx, next) => {
+		.post("/codeCommitted", (ctx, next) => {
 
 			// console.log(JSON.stringify(ctx));
 			console.log("code push detected!");
@@ -44,8 +44,12 @@ export default function registerRoutes(router: KoaRouter) {
 				commitTimeStamp: lastCommit.timestamp,
 			};
 
-			const response = await doSomeGitStuff(gitCommitData);
-			ctx.response.body = response;
+			doSomeGitStuff(gitCommitData, (log) => {
+				if (log.length) {
+					// do something
+					console.log(log);
+				}
+			});
 		});
 
 	router.get("/method1", (ctx, next) => {
@@ -67,7 +71,7 @@ export default function registerRoutes(router: KoaRouter) {
 	});
 }
 
-const doSomeGitStuff = async (gitCommitData: GitCommitData): Promise<string> => {
+const doSomeGitStuff = async (gitCommitData: GitCommitData, callback: (log: string) => void) => {
 	// cd up
 	// create repo dir
 	// clone
@@ -118,7 +122,7 @@ const doSomeGitStuff = async (gitCommitData: GitCommitData): Promise<string> => 
 	}
 
 	console.log(`git repo ${gitCommitData.repoUrl} updated`);
-	return log;
+	callback(log);
 };
 
 const appendLog = (log: string, toAppend: string): string => {
@@ -136,15 +140,7 @@ interface ErrorInterface {
 const shellExec = (cmd: string): Promise<ErrorInterface> => {
 	return new Promise((resolve) => {
 		shell.exec(cmd, (exitcode, stdout, stderr) => {
-			// if abnormal exit code
-			if (!!exitcode) {
-				// console.log("errcode: ", exitcode);
-				// console.log("err: ", stderr);
-				resolve({ exitcode, err: stderr });
-			} else {
-				// console.log("out: ", stdout);
-				resolve({ exitcode: 0, err: null });
-			}
+			resolve({ exitcode, err: !!exitcode ? stderr : null });
 		});
 	});
 };
