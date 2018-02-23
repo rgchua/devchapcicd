@@ -47,7 +47,7 @@ export default function registerRoutes(router: KoaRouter) {
 			doSomeGitStuff(gitCommitData, (log) => {
 				if (log.length) {
 					// do something
-					console.log(log);
+					console.log(`${Date().toString}: `, log);
 				}
 			});
 		});
